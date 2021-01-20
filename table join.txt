@@ -1,0 +1,14 @@
+db.maintable.aggregate([
+   {
+      $lookup: {
+         from: "genetable",
+         localField: "Start",
+         foreignField: "Start",
+         as: "fromgenetable"
+      }
+   },
+   {
+      $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$fromgenetable", 0 ] }, "$$ROOT" ] } }
+   },
+   { $project: { fromgenetable: 0 } }
+)]
